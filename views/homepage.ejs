@@ -1,0 +1,12 @@
+<%-include ('./header.ejs') %>
+<div class='input-container'></div>
+<%-include ('./todos.ejs') %>
+</div>
+<div class='content'>
+    <ul class='todo-list'>
+        <% items.forEach(item => { %>
+        <li class='todo-list--item'><%= item %></li>
+        <% }); %>
+    </ul>
+</div>
+<%-include('./footer.ejs') %>

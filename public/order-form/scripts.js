@@ -1,4 +1,5 @@
 const serverUrl = '';
+
 const orderItems = {
     undefined: { label: 'Pick an item', imgUrl: './assets/question.jpg' },
     bottle: { label: 'Bottle', imgUrl: './assets/bottle.png' },
@@ -7,14 +8,14 @@ const orderItems = {
 }
 const errorMessages = {
     '450': 'Item out of stock. :(',
-    '550': 'Exiting user. Not allowed to place another order at the moment.',
+    '550': 'Existing user. Not allowed to place another order at the moment.',
     '650': 'Outside of delivery zone. :(',
     '000': 'Oops! Looks like we\'re missing some information.'
 }
 const submitButton = document.getElementById('confirm-button');
 const order = document.getElementById('order');
 const errorMsg = document.getElementById('error');
-const size = document.getElementById('sizing');
+const size = document.getElementById('size');
 const givenName = document.getElementById('givenName');
 const surname = document.getElementById('surname');
 const email = document.getElementById('email');
@@ -48,7 +49,7 @@ const handleSubmit = (event) => {
         size: size.value,
         givenName: givenName.value,
         surname: surname.value,
-        email: email,
+        email: email.value,
         address: address.value,
         city: city.value,
         province: province.value,
@@ -64,15 +65,16 @@ const handleSubmit = (event) => {
             "Content-Type": "application/json"
         }
     })
-    .then(res => res.json())
-    .then(data => {
-        const { status, error } = data;
-        if (status === 'success') {
-            window.location.href = '/order-confirmed';
-        } else if (data.error) {
-            submitButton.disabled = false;
-            errorMsg.style.display = 'flex';
-            errorMsg.innerText = error;
-        }
-    });
+        .then(res => res.json())
+        .then(data => {
+            const { status, error } = data;
+            if (status === 'success') {
+                window.location.href = '/order-confirmed';
+            } else if (error) {
+                submitButton.disabled = false;
+                errorMsg.style.display = 'flex';
+                errorMsg.innerText = errorMessages[error];
+            }
+        });
 }
+
